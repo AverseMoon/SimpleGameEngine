@@ -1,10 +1,9 @@
+from engine.math2d import ClipIndex
 import numpy as np
-import imutils as imu
-from math2d import ClipIndex
 
 class Frame():
     def __init__(self,arr):
-        self.arr = arr
+        self.arr = np.array(arr)
     
     def __len__(self):
         return self.arr.shape[1]

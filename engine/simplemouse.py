@@ -1,5 +1,5 @@
 import sdl2.ext.mouse as sdl
-from shapes import Vec2
+from engine.shapes import Vec2
 
 class Mouse:
     @property

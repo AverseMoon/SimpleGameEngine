@@ -1,9 +1,10 @@
 import sdl2.ext as sdl
 import sdl2, cv2, numpy as np
-import image as img
+import engine.image as img
 from cython import cfunc, cclass, returns, locals as flocals
 import cython as cy
-from simplemouse import Mouse
+import engine.shapes as shapes
+from engine.simplemouse import Mouse
 
 sdl.init()
 
@@ -58,7 +59,7 @@ class Screen:
             s = self.window.size
             frame = img.Frame(np.zeros((s[1],s[0],3),dtype=np.uint8))
             for func in self.update:
-                if (func(events,frame)):
+                if (func(events,frame) == 1):
                     self.running = False
                     break
             for event in events:
