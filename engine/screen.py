@@ -1,21 +1,29 @@
 import sdl2.ext as sdl
 import sdl2, cv2, numpy as np
 import image as img
-import shapes
 from cython import cfunc, cclass, returns, locals as flocals
 import cython as cy
-import opensimplex as sim
+from simplemouse import Mouse
 
 sdl.init()
+
+
 
 @cclass
 class Camera:
     def __init__(self, screen):
         self._pos = shapes.Vec2((0,0)) # Position of center of screen
         self.objects = []
+        self.screen = screen
     @cfunc
-    def render(self,frame):
-        for object in self.objects:object.render(frame,self)
+    def render(self,frame,events):
+        for object in self.objects:
+            self.reloadXY(object)
+            object.render(frame,events)
+    def reloadXY(self,obj):
+        obj.pos = obj._pos
+        obj.pos.x -= self._pos.x
+        obj.pos.x -= self._pos.y
 
 
 @cclass
@@ -27,6 +35,7 @@ class Screen:
         self.update = []
         self.running = False
         self.setIcon(icon)
+        self.mouse = Mouse()
     
     def refreshIcon(self):sdl2.SDL_SetWindowIcon(self.window.window, sdl.image.load_img(self.icon))
     def setIcon(self, icon):
@@ -36,7 +45,6 @@ class Screen:
         self.update.append(function)
         def decor(*args,**kwargs):return function(*args,**kwargs)
         return decor
-    
     @cfunc
     def run(self):
         renderer = sdl.Renderer(self.window)
@@ -57,21 +65,8 @@ class Screen:
                 if (event.type == sdl2.SDL_QUIT):
                     self.running = False
                     break
-            self.camera.render(frame)
+            self.camera.render(frame,events)
             try:np.copyto(arr,np.flip(np.rot90(np.insert(frame.array,3,255,axis=2)),axis=0))
             except:pass
             self.window.refresh()
         self.window.hide()
-
-
-if __name__ == '__main__':
-    s = Screen(title="test")
-    
-    @s.onDraw
-    def update(evts,frame):
-        frame[:,:50] = (255,0,255)
-    @s.onDraw
-    def update2(evts,frame):
-        frame[:,:25] = (0,0,255)
-    
-    s.run()
