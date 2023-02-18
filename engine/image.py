@@ -1,4 +1,4 @@
-from engine.math2d import ClipIndex
+from .math2d import ClipIndex
 import numpy as np
 
 class Frame():

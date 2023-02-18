@@ -11,7 +11,7 @@ def SliceLimit(s,smin,smax):
         if step == None:step = 1
         if start == None:start = smin
         if stop == None:stop = smax
-        return slice(int(clamp(start,smin,smax)),int(clamp(stop,smin,smax)),int(step))
+        return slice(round(clamp(start,smin,smax)),round(clamp(stop,smin,smax)),int(step))
     else:
         if (s < smin):return None
         elif (s > smax):return None

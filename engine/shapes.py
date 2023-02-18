@@ -75,23 +75,24 @@ class Vec2(object):
 
 # Very basic Point class that acts like a point in 2d
 class Point(object):
-    def __init__(self,screen=None,pos=(0,0),scale=(1,1),rotation=0):
+    def __init__(self,*args,screen=None,pos=Vec2((0,0)),scale=Vec2((1,1)),rotation=0,visible=False,**kwargs):
         self._pos = Vec2(pos)
         self.pos = self._pos
         self.scale = Vec2(scale)
         self.screen = screen
         self.rotation = rotation
+        self.visible = bool(visible)
         
         # Check that we got a screen
         if (self.screen == None):raise AttributeError("Point.__init__() did not get required argument \"screen\"")
         else:self.screen.camera.objects.append(self)
     def render(self,frame,events):
         # Render the object
-        frame[self.x-25:self.x+25,self.y-25:self.y+25] = (0,0,255)
+        return 0
     def isTouching(self,shape):
         # Do collision detection with other shapes
         return False
-    def hover(self):
+    def hovered(self):
         # Mouse hover detection
         return False
     @property
@@ -114,3 +115,15 @@ class Point(object):
             self._pos = Vec2(pos)
             self.screen.camera.reloadXY(self)
         else:raise IndexError("Length of positional argument must be exactly 2.")
+
+class Rectangle(Point):
+    def __init__(self,*args,screen=None,color=(0,0,0),**kwargs):
+        super().__init__(self,*args,screen=screen,**kwargs)
+        self.color = color
+    def render(self,frame,events):
+        frame[self.x-(self.scale[0]/2):self.x+(self.scale[0]/2),self.y-(self.scale[1]/2):self.y+(self.scale[1]/2)] = self.color
+        return 0
+    def hovered(self):
+        mx = self.screen.mouse.x
+        my = self.screen.mouse.y
+        return (((mx > self.x-(self.scale[0]/2)) and (mx < self.x+(self.scale[0]/2))) and ((my > self.y-(self.scale[1]/2)) and (my < self.y+(self.scale[1]/2))))
