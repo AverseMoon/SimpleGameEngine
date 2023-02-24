@@ -21,6 +21,7 @@ button = shapes.Button(screen = MyScreen, pos = MyScreen.center, scale = (50,30)
 
 @MyScreen.onDraw # onDraw function decorator running your function every frame
 def onUpdateEvent(events,frame): # This function will be ran ONCE per frame
+    button.xy = MyScreen.center # Force button to stay at center of screen even after rescaling!
     if MyScreen.keyDown("space"): # If the SPACE button is pressed?
         newRect = shapes.Rectangle(screen = MyScreen, pos = MyScreen.mouse.xy, color = np.random.randint(0, 255, size = (3)), scale = (20,20)) 
         # Make a 20 x 20 pixel rectangle at the mouse's position when space is pressed
