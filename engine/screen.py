@@ -5,6 +5,7 @@ from cython import cfunc, cclass, returns, locals as flocals
 import cython as cy
 from .shapes import Vec2
 from .simplemouse import Mouse
+import keyboard
 
 sdl.init()
 
@@ -29,7 +30,7 @@ class Camera:
 
 
 @cclass
-# Screen, the window to the world!
+# Screen, the window to your screen!
 class Screen:
     def __init__(self,size=Vec2((220,229)),title="Simple Game",icon="././images/icon.png",flags=sdl2.SDL_WINDOW_RESIZABLE):
         self.camera = Camera(self)
@@ -45,6 +46,8 @@ class Screen:
     def height(self):return self.window.size[1]
     @property
     def wh(self):return self.window.size
+    @property
+    def center(self):return (self.width // 2, self.height // 2)
     @width.setter
     def width(self,v):self.window.size = (v,self.window.size[1])
     @height.setter
@@ -60,6 +63,12 @@ class Screen:
         self.update.append(function)
         def decor(*args,**kwargs):return function(*args,**kwargs)
         return decor
+    def whenKeyDown(self,key,args):
+        def decor(function):
+            keyboard.add_hotkey(key,function,args=args)
+            return (lambda *args, **kwargs:function(*args,**kwargs))
+        return decor
+    def keyDown(self,key):return keyboard.is_pressed(key)
     @cfunc
     def run(self):
         renderer = sdl.Renderer(self.window)

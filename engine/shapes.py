@@ -127,3 +127,20 @@ class Rectangle(Point):
         mx = self.screen.mouse.x
         my = self.screen.mouse.y
         return (((mx > self.x-(self.scale[0]/2)) and (mx < self.x+(self.scale[0]/2))) and ((my > self.y-(self.scale[1]/2)) and (my < self.y+(self.scale[1]/2))))
+class Button(Rectangle):
+    def __init__(self,*args,screen=None,color=(0,0,0),**kwargs):
+        super().__init__(self,*args,screen=screen,**kwargs)
+        self.color = color
+        self.left = False
+        self.right = False
+        self.middle = False
+        self.x1 = False
+        self.x2 = False
+    def render(self, frame, events):
+        super().render(frame, events)
+        self.left = (self.hovered() and self.screen.mouse.left)
+        self.right = (self.hovered() and self.screen.mouse.right)
+        self.middle = (self.hovered() and self.screen.mouse.middle)
+        self.x1 = (self.hovered() and self.screen.mouse.x1)
+        self.x2 = (self.hovered() and self.screen.mouse.x2)
+        return 0
