@@ -2,9 +2,8 @@
 
 For the people who don't like UI's.
 
-# Tutorials
 
-### Setup:
+### Cheap Microsoft Paint:
 
 Start with a simple import and initialization.
 ```python
