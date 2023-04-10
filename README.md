@@ -1,5 +1,5 @@
 ## NOTE THAT:
-This version is not updated anymore and will probably be switched to a wrapper for the new version [SimpleGameEngineC++](https://github.com/AverseMoon/SimpleGameEngine)
+This version is not updated anymore and will probably be switched to a wrapper for the new version [SimpleGameEngineC++](https://github.com/AverseMoon/SimpleGameEngineCPP)
 
 
 # SimpleGameEngine
