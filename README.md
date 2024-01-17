@@ -3,7 +3,7 @@ This version is not updated anymore and will probably be switched to a wrapper f
 
 
 # SimpleGameEngine
-For the people who don't like UI's.
+For the people who don't like UIs
 
 
 ### Cheap Microsoft Paint:
